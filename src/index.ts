@@ -147,3 +147,6 @@ main().catch(e => { err((e as Error).message); process.exit(1); });
 // Future: --db mysql|sqlite|postgres (default: postgres)
 // Future: --orm drizzle|prisma|typeorm|sequelize
 // Future: --validate — run generated SQL against a test DB
+// Future: --db mysql|sqlite|postgres (default: postgres)
+// Future: --orm drizzle|prisma|typeorm|sequelize
+// Future: --validate — run generated SQL against a test DB
