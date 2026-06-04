@@ -1,0 +1,44 @@
+{
+  "name": "schema-gpt",
+  "version": "1.0.0",
+  "description": "Generate full database schemas from plain English — PostgreSQL, Drizzle ORM, Prisma, and Zod validation, all at once.",
+  "bin": {
+    "schema-gpt": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "database",
+    "schema",
+    "drizzle",
+    "prisma",
+    "zod",
+    "ai",
+    "cli",
+    "postgresql",
+    "orm",
+    "postgresql",
+    "mysql",
+    "sqlite",
+    "type-safe",
+    "code-generation"
+  ],
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/schema-gpt"
+  }
+}
