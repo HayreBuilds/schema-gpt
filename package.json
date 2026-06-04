@@ -26,6 +26,12 @@
     "mysql",
     "sqlite",
     "type-safe",
+    "code-generation",
+    "orm",
+    "postgresql",
+    "mysql",
+    "sqlite",
+    "type-safe",
     "code-generation"
   ],
   "license": "MIT",
