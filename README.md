@@ -112,3 +112,10 @@ MIT
 - Include roles: "admin, user, moderator" → enum columns get generated
 - Mention scale: "high-traffic social network" → more indexes added
 - Name your relations: "users can follow other users" → self-referential junction table
+
+## Tips
+
+- Be specific: "E-commerce store with product variants, inventory tracking, and abandoned cart" generates better schemas than "e-commerce store"
+- Include roles: "admin, user, moderator" → enum columns get generated
+- Mention scale: "high-traffic social network" → more indexes added
+- Name your relations: "users can follow other users" → self-referential junction table
