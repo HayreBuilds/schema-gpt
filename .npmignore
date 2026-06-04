@@ -1,0 +1,7 @@
+src/
+tsconfig.json
+examples/
+*.tsbuildinfo
+CONTRIBUTING.md
+.github/
+output/
