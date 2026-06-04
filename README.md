@@ -1,121 +1,98 @@
-# schema-gpt
+# 🏗️ schema-gpt
 
-> Generate complete database schemas from plain English. Describe your app, get back PostgreSQL, Drizzle ORM, Prisma, and Zod — all at once.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/HayreBuilds/schema-gpt/ci.yml?branch=main)](https://github.com/HayreBuilds/schema-gpt/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![NVIDIA NIM](https://img.shields.io/badge/NVIDIA-NIM-76B900?logo=nvidia&logoColor=white)](https://build.nvidia.com)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/HayreBuilds/schema-gpt/pulls)
 
-```
-$ schema-gpt "I'm building an Airbnb clone with hosts, guests, listings, bookings, and reviews"
+**Generate full database schemas from plain English. SQL, Drizzle, Prisma, and Zod—all in seconds.**
 
-  ◆ schema-gpt
+> Starting a new project? Skip the manual schema design. **schema-gpt** turns your application description into a production-ready, normalized database architecture.
 
-  ✔ Tables: users, listings, rooms, bookings, reviews, amenities, listing_amenities
-  Normalized schema for a property rental marketplace with user roles...
+---
 
-## SQL
-CREATE TYPE user_role AS ENUM ('host', 'guest', 'admin');
-CREATE TABLE users (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email TEXT NOT NULL UNIQUE,
-  role user_role NOT NULL DEFAULT 'guest',
-  full_name TEXT NOT NULL,
-  avatar_url TEXT,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
--- ... 6 more tables
+## 🚀 Quick Start
 
-## Drizzle ORM
-import { pgTable, uuid, text, pgEnum, timestamp } from 'drizzle-orm/pg-core';
-
-export const userRoleEnum = pgEnum('user_role', ['host', 'guest', 'admin']);
-export const users = pgTable('users', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  email: text('email').notNull().unique(),
-  ...
+```bash
+# Generate a schema for a SaaS app
+npx schema-gpt "SaaS app with multi-tenant teams, projects, tasks, and Stripe billing"
 ```
 
 ---
 
-## Install
+## ✨ Key Features
+
+- **📄 Multi-Target Output**: Generates SQL (PostgreSQL/MySQL), Drizzle ORM, Prisma, and Zod schemas.
+- **🧠 Intelligent Normalization**: Automatically handles primary keys, foreign keys, and 3NF normalization.
+- **⚡ Zero Setup**: No local database needed. Uses high-performance NVIDIA NIM models.
+- **📂 Full Project Scaffold**: Generates a clean directory structure with all necessary files.
+- **🎨 Context-Aware**: Understands complex relationships like "users can follow other users" or "multi-tenant teams."
+
+---
+
+## 💻 Installation
 
 ```bash
 npm install -g schema-gpt
 ```
 
-**Get your free NVIDIA API key:** [build.nvidia.com](https://build.nvidia.com)
+---
 
-## Usage
+## 🛠️ Usage Examples
 
+### Airbnb Clone
 ```bash
-# Stream full schema output to terminal
-schema-gpt "SaaS app with teams, projects, tasks, and billing"
-
-# Write all files to a directory
-schema-gpt "E-commerce store with products, orders, and reviews" --output ./schema
-
-# Get only specific output
-schema-gpt "Blog with posts and comments" --only sql
-schema-gpt "Blog with posts and comments" --only drizzle > src/db/schema.ts
-schema-gpt "Blog with posts and comments" --only prisma > prisma/schema.prisma
-schema-gpt "Blog with posts and comments" --only zod > src/lib/validation.ts
-
-# Non-interactive mode
-schema-gpt "Twitter clone" --no-stream --output ./db
+schema-gpt "Airbnb clone with hosts, guests, listings, bookings, and reviews" --output ./schema
 ```
 
-## Example Prompts
-
-```
-schema-gpt "Airbnb clone with hosts, guests, listings, bookings, and reviews"
-schema-gpt "SaaS app with multi-tenant teams, projects, tasks, and Stripe billing"
-schema-gpt "Twitter-like social network with tweets, follows, likes, and DMs"
+### E-commerce Store
+```bash
 schema-gpt "E-commerce store with products, variants, inventory, cart, and orders"
-schema-gpt "Job board with companies, job postings, applications, and interviews"
-schema-gpt "Discord-like chat app with servers, channels, messages, and roles"
-schema-gpt "Learning management system with courses, lessons, students, and progress"
-schema-gpt "Food delivery app with restaurants, menus, orders, drivers, and ratings"
 ```
 
-## Output Files (with `--output`)
-
+### Social Network
+```bash
+schema-gpt "Twitter-like social network with tweets, follows, likes, and DMs"
 ```
+
+---
+
+## 📂 Output Structure
+
+When using the `--output` flag, **schema-gpt** generates:
+
+```text
 schema/
-  schema.sql        — PostgreSQL CREATE TABLE statements with indexes and enums
-  schema.ts         — Drizzle ORM TypeScript schema
-  schema.prisma     — Prisma schema with datasource and generator
-  validation.ts     — Zod validation schemas for create/update operations
-  index.md          — Description and table list
+  ├── schema.sql        # PostgreSQL CREATE TABLE statements
+  ├── schema.ts         # Drizzle ORM TypeScript models
+  ├── schema.prisma     # Prisma schema file
+  ├── validation.ts     # Zod validation schemas
+  └── README.md         # Documentation of the generated schema
 ```
 
-## What Gets Generated
+---
 
-- ✅ `id UUID PRIMARY KEY DEFAULT gen_random_uuid()` on every table
-- ✅ `created_at` and `updated_at` timestamps
-- ✅ Foreign keys with appropriate `ON DELETE` behavior
-- ✅ Indexes on frequently-queried columns
-- ✅ PostgreSQL enums for status fields
-- ✅ Normalized to 3NF
-- ✅ Drizzle: exports each table, uses `drizzle-orm/pg-core`
-- ✅ Prisma: full schema with datasource and generator blocks
-- ✅ Zod: separate `createSchema` and `updateSchema` for each table
+## 🔍 How it Works
 
-## Powered By
+1. **Prompt Engineering**: Your description is wrapped in a specialized database architecture prompt.
+2. **AI Reasoning**: `nvidia/nemotron-4-340b-instruct` designs the normalized schema.
+3. **Parser Engine**: Extracts the SQL, TypeScript, and Prisma code from the AI response.
+4. **File Generation**: Writes the formatted code to your local machine.
 
-- **`nvidia/nemotron-3-ultra-550b-a55b`** — 550B reasoning model (free on NVIDIA NIM)
+---
 
-## License
+## 🤝 Contributing
 
-MIT
+We love contributions! Check out our [Contributing Guide](CONTRIBUTING.md) for tips on improving the generation prompts.
 
-## Tips
+---
 
-- Be specific: "E-commerce store with product variants, inventory tracking, and abandoned cart" generates better schemas than "e-commerce store"
-- Include roles: "admin, user, moderator" → enum columns get generated
-- Mention scale: "high-traffic social network" → more indexes added
-- Name your relations: "users can follow other users" → self-referential junction table
+## 📄 License
 
-## Tips
+Distributed under the MIT License. See `LICENSE` for more information.
 
-- Be specific: "E-commerce store with product variants, inventory tracking, and abandoned cart" generates better schemas than "e-commerce store"
-- Include roles: "admin, user, moderator" → enum columns get generated
-- Mention scale: "high-traffic social network" → more indexes added
-- Name your relations: "users can follow other users" → self-referential junction table
+---
+
+## 💖 Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=HayreBuilds/schema-gpt&type=Date)](https://star-history.com/#HayreBuilds/schema-gpt&Date)
