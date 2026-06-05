@@ -175,35 +175,3 @@ Use text('id').primaryKey() with nanoid, integer('created_at', {mode:'timestamp'
   const data = await resp.json() as { choices: Array<{ message: { content: string } }> };
   return data.choices[0]?.message.content ?? "";
 }
-
-export const MYSQL_SYSTEM = `You are a MySQL database architect. Generate clean MySQL CREATE TABLE statements with:
-- AUTO_INCREMENT BIGINT primary keys (or CHAR(36) UUID with gen via trigger)
-- created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-- updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-- Appropriate VARCHAR lengths
-- FOREIGN KEY constraints with ON DELETE behavior
-- UNIQUE constraints and INDEX declarations`;
-
-export async function generateMySQLSchema(description: string, apiKey: string): Promise<string> {
-  const resp = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ model: "nvidia/nemotron-3-ultra-550b-a55b", messages: [{ role: "system", content: MYSQL_SYSTEM }, { role: "user", content: `Generate MySQL schema for: ${description}` }], temperature: 0.1, max_tokens: 2000 }),
-  });
-  if (!resp.ok) throw new Error(`API error ${resp.status}`);
-  const data = await resp.json() as { choices: Array<{ message: { content: string } }> };
-  return data.choices[0]?.message.content ?? "";
-}
-
-export async function generateDrizzleSQLite(description: string, apiKey: string): Promise<string> {
-  const prompt = `Generate a Drizzle ORM schema using drizzle-orm/sqlite-core for this app: ${description}
-Use text('id').primaryKey() with nanoid, integer('created_at', {mode:'timestamp'}).notNull().default(sql\`CURRENT_TIMESTAMP\`), and proper foreign keys.`;
-  const resp = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ model: "nvidia/nemotron-3-ultra-550b-a55b", messages: [{ role: "user", content: prompt }], temperature: 0.1, max_tokens: 2000 }),
-  });
-  if (!resp.ok) throw new Error(`API error ${resp.status}`);
-  const data = await resp.json() as { choices: Array<{ message: { content: string } }> };
-  return data.choices[0]?.message.content ?? "";
-}
